@@ -8,7 +8,7 @@ import { ArrowLeft, Twitter, Linkedin, Link as LinkIcon, MessageCircle } from "l
 import Navbar from "@/components/Navbar";
 import FooterSection from "@/components/FooterSection";
 
-const API_URL = "http://localhost:5001/api/blogs";
+const API_URL = `${import.meta.env.VITE_API_URL}/api/blogs`;
 
 const BlogPost = () => {
   const { slug } = useParams();

@@ -6,8 +6,8 @@ import axios from "axios";
 import parse from "html-react-parser";
 import { ArrowLeft, Save, Eye, EyeOff, Image as ImageIcon } from "lucide-react";
 
-const API_URL = "http://localhost:5001/api/blogs";
-const UPLOAD_URL = "http://localhost:5001/api/blogs/upload";
+const API_URL = `${import.meta.env.VITE_API_URL}/api/blogs`;
+const UPLOAD_URL = `${import.meta.env.VITE_API_URL}/api/blogs/upload`;
 
 const BlogEditor = () => {
   const { slug } = useParams();
