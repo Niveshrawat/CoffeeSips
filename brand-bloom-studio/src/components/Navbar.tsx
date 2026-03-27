@@ -30,17 +30,17 @@ const Navbar = () => {
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? "glass-card shadow-warm py-3" : "py-6 backdrop-blur-[2px] bg-background/5"
         }`}
     >
-      <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between">
         <a href="/#home" className="flex items-center justify-center px-4 py-2.5 rounded-2xl bg-white/95 backdrop-blur-md shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-white/20 group hover:bg-white transition-all duration-300">
           <img 
             src="/logo.png" 
             alt="Coffeesips" 
-            className="h-12 md:h-14 w-auto transition-transform duration-500 group-hover:scale-105" 
+            className="h-12 lg:h-14 w-auto transition-transform duration-500 group-hover:scale-105" 
           />
         </a>
 
         {/* Desktop */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden lg:flex items-center gap-8">
           {navItems.map((item) => (
             <a
               key={item.label}
@@ -61,7 +61,7 @@ const Navbar = () => {
         {/* Mobile toggle */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="md:hidden text-foreground"
+          className="lg:hidden text-foreground"
         >
           {mobileOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
@@ -73,7 +73,7 @@ const Navbar = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden glass-card mt-2 mx-4 rounded-xl overflow-hidden"
+            className="lg:hidden glass-card mt-2 mx-4 rounded-xl overflow-hidden"
           >
             <div className="flex flex-col p-6 gap-4">
               {navItems.map((item) => (
