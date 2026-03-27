@@ -14,6 +14,12 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Status page
 app.get('/', (req, res) => {
+  const isConnected = mongoose.connection.readyState === 1;
+  const statusColor = isConnected ? '#4ade80' : '#f87171';
+  const statusBg = isConnected ? 'rgba(34,197,94,0.12)' : 'rgba(239,68,68,0.12)';
+  const statusBorder = isConnected ? 'rgba(34,197,94,0.3)' : 'rgba(239,68,68,0.3)';
+  const statusText = isConnected ? 'Connected' : 'Disconnected';
+
   res.send(`<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,14 +49,20 @@ app.get('/', (req, res) => {
       width: 90%;
       box-shadow: 0 24px 64px rgba(0,0,0,0.4);
     }
-    .logo { font-size: 3rem; margin-bottom: 12px; }
+    .logo { font-size: 3.5rem; margin-bottom: 20px; }
     h1 { font-size: 1.8rem; font-weight: 700; color: #f5c87a; letter-spacing: -0.5px; }
     p { margin-top: 8px; font-size: 0.95rem; color: rgba(255,255,255,0.55); }
+    .status-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 28px;
+    }
     .status {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 8px;
-      margin-top: 28px;
       background: rgba(34,197,94,0.12);
       border: 1px solid rgba(34,197,94,0.3);
       border-radius: 100px;
@@ -59,11 +71,16 @@ app.get('/', (req, res) => {
       font-weight: 600;
       color: #4ade80;
     }
+    .db-status {
+      background: ${statusBg};
+      border-color: ${statusBorder};
+      color: ${statusColor};
+    }
     .dot {
       width: 8px; height: 8px;
-      background: #4ade80;
+      background: currentColor;
       border-radius: 50%;
-      animation: pulse 1.5s ease-in-out infinite;
+      ${isConnected ? 'animation: pulse 1.5s ease-in-out infinite;' : ''}
     }
     @keyframes pulse {
       0%, 100% { opacity: 1; transform: scale(1); }
@@ -100,7 +117,10 @@ app.get('/', (req, res) => {
     <div class="logo">☕</div>
     <h1>CoffeeSips API</h1>
     <p>Backend service is live and running</p>
-    <div class="status"><span class="dot"></span> All systems operational</div>
+    <div class="status-group">
+      <div class="status"><span class="dot"></span> All systems operational</div>
+      <div class="status db-status"><span class="dot"></span> Database ${statusText}</div>
+    </div>
     <hr class="divider"/>
     <div class="endpoints">
       <h3>Available Endpoints</h3>
@@ -123,8 +143,11 @@ app.use('/api/auth', authRoutes);
 
 // Database Connection
 mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('Connected to MongoDB'))
-  .catch((err) => console.error('MongoDB connection error:', err));
+  .then(() => console.log('✅ Connected to MongoDB'))
+  .catch((err) => {
+    console.error('❌ MongoDB connection error:', err.message);
+    console.error('Detailed Error:', err);
+  });
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

@@ -33,7 +33,12 @@ router.get('/', async (req, res) => {
     const blogs = await Blog.find().sort({ createdAt: -1 });
     res.json(blogs);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error('Fetch Blogs Error:', error);
+    res.status(500).json({ 
+      message: 'Failed to fetch blogs', 
+      error: error.message,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined 
+    });
   }
 });
 
